@@ -12,7 +12,7 @@
   <!--Set up Page Variables for Header include-->
   <cfset This.PageName = 'Add Preceptors'>
   <cfset This.Icon = 'fa fa-plus'>
-  <!--Set up Page Variables for Navigation include-->    
+  <!--Set up Page Variables for Navigation include-->
   <cfset This.CurrentLevel = '2'>
   <cfset This.HostName = '#cgi.script_name#'>
   <cfset This.ActiveFolder = 'hp'>
@@ -48,161 +48,112 @@ SELECT * FROM States ORDER BY ID ASC
 
 
 <!--Add Record on validation-->
-<cfif IsDefined("FORM.addTraineeHDN") AND FORM.addTraineeHDN EQ "True">
-  <cfquery datasource="#datasource2#">   
-  INSERT INTO dbo.Trainees (Status, LastName, FirstName, MiddleName, MaidenName, EmailPreferred, EmailUniversity, EmailPermanent, Phone, EmergContactName, EmergContactPhone, InstitutionID, InstitutionLevel, DisciplineID, Enrollment, DOB, Sex, Ethnicity, Race, RuralBackground, Disadvantaged, AZbackground, MilitaryStatusPre, SpecialHousing, Notes, CreatedBy, LastEditedBy, DateUpdated)
-  VALUES (<cfif IsDefined("FORM.Status") AND #FORM.Status# NEQ "">
-    <cfqueryparam value="#FORM.Status#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.LastName") AND #FORM.LastName# NEQ "">
-    <cfqueryparam value="#FORM.LastName#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.FirstName") AND #FORM.FirstName# NEQ "">
+
+
+<cfif IsDefined("FORM.addPreceptorHDN") AND FORM.addPreceptorHDN EQ "True">
+
+  <cfquery datasource="#datasource2#">
+  INSERT INTO dbo.Preceptors(Status
+   ,PLastName
+   ,PFirstName
+   ,PMiddleName
+   ,BoardStatus
+   ,Malpractice
+   ,PreceptorEmail
+   ,PreceptorPhone
+   ,FirstYearPractice
+   ,FirstYearPreceptor
+   )
+  VALUES (
+  <cfif IsDefined("FORM.status")>
+  1
+  <cfelse>
+  0
+  </cfif>
+    ,
+    <cfif IsDefined("FORM.FirstName") AND #FORM.FirstName# NEQ "">
     <cfqueryparam value="#FORM.FirstName#" cfsqltype="cf_sql_clob" maxlength="50">
     <cfelse>
     ''
     </cfif>
-    , <cfif IsDefined("FORM.MiddleName") AND #FORM.MiddleName# NEQ "">
+    ,
+    <cfif IsDefined("FORM.LastName") AND #FORM.LastName# NEQ "">
+    <cfqueryparam value="#FORM.LastName#" cfsqltype="cf_sql_clob" maxlength="50">
+    <cfelse>
+    ''
+    </cfif>
+    ,
+    <cfif IsDefined("FORM.MiddleName") AND #FORM.MiddleName# NEQ "">
     <cfqueryparam value="#FORM.MiddleName#" cfsqltype="cf_sql_clob" maxlength="50">
     <cfelse>
     ''
     </cfif>
-    , <cfif IsDefined("FORM.MaidenName") AND #FORM.MaidenName# NEQ "">
-    <cfqueryparam value="#FORM.MaidenName#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.EmailPreferred") AND #FORM.EmailPreferred# NEQ "">
-    <cfqueryparam value="#FORM.EmailPreferred#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.EmailUniversity") AND #FORM.EmailUniversity# NEQ "">
-    <cfqueryparam value="#FORM.EmailUniversity#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.EmailPermanent") AND #FORM.EmailPermanent# NEQ "">
-    <cfqueryparam value="#FORM.EmailPermanent#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.Phone") AND #FORM.Phone# NEQ "">
-    <cfqueryparam value="#FORM.Phone#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.EmergContactName") AND #FORM.EmergContactName# NEQ "">
-    <cfqueryparam value="#FORM.EmergContactName#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.EmergContactPhone") AND #FORM.EmergContactPhone# NEQ "">
-    <cfqueryparam value="#FORM.EmergContactPhone#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.InstitutionID") AND #FORM.InstitutionID# NEQ "">
-    <cfqueryparam value="#FORM.InstitutionID#" cfsqltype="cf_sql_numeric">
-    <cfelse>
-    NULL
-    </cfif>
-    , <cfif IsDefined("FORM.InstitutionLevel") AND #FORM.InstitutionLevel# NEQ "">
-    <cfqueryparam value="#FORM.InstitutionLevel#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.Discipline") AND #FORM.Discipline# NEQ "">
-    <cfqueryparam value="#FORM.Discipline#" cfsqltype="cf_sql_numeric">
-    <cfelse>
-    NULL
-    </cfif>
-    , <cfif IsDefined("FORM.Enrollment") AND #FORM.Enrollment# NEQ "">
-    <cfqueryparam value="#FORM.Enrollment#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.DOB") AND #FORM.DOB# NEQ "">
-    <cfqueryparam value="#FORM.DOB#" cfsqltype="cf_sql_timestamp">
-    <cfelse>
-    NULL
-    </cfif>
-    , <cfif IsDefined("FORM.Sex") AND #FORM.Sex# NEQ "">
-    <cfqueryparam value="#FORM.Sex#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.Ethnicity") AND #FORM.Ethnicity# NEQ "">
-    <cfqueryparam value="#FORM.Ethnicity#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.Race") AND #FORM.Race# NEQ "">
-    <cfqueryparam value="#FORM.Race#" cfsqltype="cf_sql_clob" maxlength="150">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.RuralBackground") AND #FORM.RuralBackground# NEQ "">
-    <cfqueryparam value="#FORM.RuralBackground#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.Disadvantaged") AND #FORM.Disadvantaged# NEQ "">
-    <cfqueryparam value="#FORM.Disadvantaged#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.AZbackground") AND #FORM.AZbackground# NEQ "">
-    <cfqueryparam value="#FORM.AZbackground#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.MilitaryStatusPre") AND #FORM.MilitaryStatusPre# NEQ "">
-    <cfqueryparam value="#FORM.MilitaryStatusPre#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.SpecialHousing") AND #FORM.SpecialHousing# NEQ "">
-    <cfqueryparam value="#FORM.SpecialHousing#" cfsqltype="cf_sql_clob" maxlength="50">
-    <cfelse>
-    ''
-    </cfif>
-    , <cfif IsDefined("FORM.Notes") AND #FORM.Notes# NEQ "">
-    <cfqueryparam value="#FORM.Notes#" cfsqltype="cf_sql_clob" maxlength="4000">
+    ,
+    <cfif IsDefined("FORM.BoardStatus") AND #FORM.BoardStatus# NEQ "">
+    <cfqueryparam value="#FORM.BoardStatus#" cfsqltype="cf_sql_clob" maxlength="50">
     <cfelse>
     ''
     </cfif>
     ,
-    <cfqueryparam value="#Session.UserID#" cfsqltype="cf_sql_clob" maxlength="50">
+    <cfif IsDefined("FORM.malpractice") AND #FORM.malpractice# NEQ "">
+    <cfqueryparam value="#FORM.malpractice#" cfsqltype="cf_sql_clob" maxlength="50">
+    <cfelse>
+    ''
+    </cfif>
     ,
-    <cfqueryparam value="#Session.UserID#" cfsqltype="cf_sql_clob" maxlength="50">
-    ,DEFAULT
-    )
-  </cfquery>
-  <!--Get GetPreceptorsID -->
+    <cfif IsDefined("FORM.PreceptorEmail") AND #FORM.PreceptorEmail# NEQ "">
+    <cfqueryparam value="#FORM.PreceptorEmail#" cfsqltype="cf_sql_clob" maxlength="50">
+    <cfelse>
+    ''
+    </cfif>
+    ,
+    <cfif IsDefined("FORM.PreceptorPhone") AND #FORM.PreceptorPhone# NEQ "">
+    <cfqueryparam value="#FORM.PreceptorPhone#" cfsqltype="cf_sql_clob" maxlength="50">
+    <cfelse>
+    ''
+    </cfif>
+    ,
+    <cfif IsDefined("FORM.FirstYearPractice") AND #FORM.FirstYearPractice# NEQ "">
+    <cfqueryparam value="#FORM.FirstYearPractice#" cfsqltype="cf_sql_clob" maxlength="50">
+    <cfelse>
+    ''
+    </cfif>
 
-  <cfquery name="GetPreceptorsID" datasource="#datasource2#">
-  SELECT max(ID) as PreceptorsID FROM dbo.Preceptors
+    ,
+    <cfif IsDefined("FORM.FirstYearPreceptor") AND #FORM.FirstYearPractice# NEQ "">
+    <cfqueryparam value="#FORM.FirstYearPreceptor#" cfsqltype="cf_sql_clob" maxlength="50">
+    <cfelse>
+    ''
+    </cfif>
+
+
+
+
+  )
+
+</cfquery>
+
+<!--- <cfset This.ID = '#GetPreceptorsID.PreceptorsID#'> --->
+
+<!--Get GetPreceptorsID -->
+
+<cfquery name="GetPreceptorsID" datasource="#datasource2#">
+SELECT max(ID) as PreceptorsID FROM dbo.Preceptors
 </cfquery> 
-
 <cfset This.ID = '#GetPreceptorsID.PreceptorsID#'>
 <!--Add Credentials-->
 <cfloop index="Credentials" list="#FORM.PreceptorsCredentials#" delimiters=",">
   <cfquery datasource="#datasource2#">   
-  INSERT INTO dbo.PreceptorsCredentials (PreceptorsID,CredentialsID)
+  INSERT INTO dbo.PreceptorsCredentials (PreceptorID,CredentialID)
   VALUES (#This.ID#, #Credentials#)
 </cfquery> 
 </cfloop> 
 
 <!--- Add Specialties   6/20/14 --->
-<cfloop index="Specialties" list="#FORM.PreceptorsSpecialties#" delimiters=",">
+ <cfloop index="Specialties" list="#FORM.PreceptorsSpecialties#" delimiters=",">
   <cfquery datasource="#datasource2#">   
-  INSERT INTO dbo.PreceptorsSpecialties (PreceptorsID,SpecialtiesID)
-  VALUES (#This.ID#, #Specialty#)
+  INSERT INTO dbo.PreceptorsSpecialties (PreceptorID,SpecialtyID)
+  VALUES (#This.ID#, #Specialties#)
 </cfquery> 
 </cfloop> 
 
@@ -210,46 +161,34 @@ SELECT * FROM States ORDER BY ID ASC
 <!--- Add Languages   7/11/14 --->
 <cfloop index="Languages" list="#FORM.PreceptorsLanguages#" delimiters=",">
   <cfquery datasource="#datasource2#">   
-  INSERT INTO dbo.PreceptorsSpecialties (PreceptorsID,LanguagesID)
+  INSERT INTO dbo.PreceptorsLanguaes (PreceptorID,LanguageID)
   VALUES (#This.ID#, #Languages#)
 </cfquery> 
 </cfloop> 
 
-<!--- Add Languages   7/11/14 --->
+<!--- Add Sites  7/11/14 --->
 <cfloop index="SitesName" list="#FORM.PreceptorsSites#" delimiters=",">
   <cfquery datasource="#datasource2#">   
-  INSERT INTO dbo.PreceptorsSites (PreceptorsID,SitesID)
+  INSERT INTO dbo.PreceptorsSites (PreceptorID,SitesID)
   VALUES (#This.ID#, #SitesName#)
 </cfquery> 
 </cfloop>      
 
 
 
-<cfquery name="GetTraineeID" datasource="#datasource2#">
-SELECT max(ID) as TraineeID FROM dbo.Trainees
-</cfquery>
-<cfset This.ID = '#GetTraineeID.TraineeID#'>
+<cfloop index="Organization" list="#FORM.PreceptorsAffiliation#" delimiters=",">
+  <cfquery datasource="#datasource2#">   
+  INSERT INTO dbo.PreceptorsAffiliation (PreceptorID,OrganizationID)
+  VALUES (#This.ID#, #Organization#)
+</cfquery> 
+</cfloop>  
 
 
 
-<cfquery datasource="#datasource2#">   
-INSERT INTO dbo.Degrees (TraineeID,AnticDegree,AnticDate)
-VALUES (#This.ID#
-  , <cfif IsDefined("FORM.AnticDegree") AND #FORM.AnticDegree# NEQ "">
-  <cfqueryparam value="#FORM.AnticDegree#" cfsqltype="cf_sql_clob" maxlength="50">
-  <cfelse>
-  ''
-  </cfif>
-  ,<cfif IsDefined("FORM.antdate") AND #FORM.antdate# NEQ "">
-  <cfqueryparam value="#FORM.AnticDate#" cfsqltype="cf_sql_clob" maxlength="50">
-  <cfelse>
-  ''
-  </cfif>
-)
-</cfquery>
-<cfset Session.NewTraineeAdded="Yes">
-<cfset Session.TraineeMode="V">
-<cflocation url = "vTrainee.cfm?id=#this.ID#" addtoken="no">
+
+<cfset Session.NewPreceptorAdded="Yes">
+<cfset Session.PreceptorMode="V">
+<cflocation url = "aPreceptor.cfm" addtoken="no">
 
 </cfif>
 
@@ -380,7 +319,7 @@ VALUES (#This.ID#
                     <label class="col-sm-2 control-label">Specialty<span class="asterisk">*</span></label>
                     <div class="col-sm-10">
                       <select class="form-control chosen-select" multiple data-placeholder="Choose Preceptors's Specialty.." name="PreceptorsSpecialties" required>
-                       <!---  <option value=""></option> --->
+                        <option value=""></option>
                        <cfoutput query="rSpecialties">
                         <option value="#ID#">#Specialty#</option>
                       </cfoutput>
@@ -394,14 +333,14 @@ VALUES (#This.ID#
                 <label class="col-sm-2 control-label">Malpractice<span class="asterisk">*</span></label>
                 <div class="col-sm-4">
                   <div class="rdio rdio-primary">
-                    <input type="radio" name="sex" value="1" id="sexMale" >
-                    <label for="sexMale">active</label>
+                    <input type="radio" name="malpractice" value="active" id="active" >
+                    <label for="active">active</label>
                   </div>
                   <div class="rdio rdio-primary">
-                    <input type="radio" name="sex" value="0" id="sexFemale">
-                    <label for="sexFemale">Inactive</label>
+                    <input type="radio" name="malpractice" value="inactive" id="inactive">
+                    <label for="inactive">Inactive</label>
                   </div>
-                  <label class="error" for="sex"></label>
+                  <label class="error" for="inactive"></label>
                 </div>
               </div>
 
@@ -409,7 +348,7 @@ VALUES (#This.ID#
               <div class="form-group">
                 <label class="col-sm-2 control-label">BoardStatus</label>
                 <div class="col-sm-4">
-                  <select class="form-control" data-placeholder="Choose a Level..." name="InstitutionLevel">
+                  <select class="form-control" data-placeholder="Choose a Level..." name="BoardStatus">
                     <option value="">Choose a BoardStatus...</option>
                     <option value="0">Board certified</option>
                     <option value="1">Board eligible</option>
@@ -466,7 +405,7 @@ VALUES (#This.ID#
             <label class="col-sm-2 control-label">Languages</label>
             <div class="col-sm-10">
               <select class="form-control chosen-select" multiple data-placeholder="Choose Preceptors's Languages.." name="PreceptorsLanguages" required>
-               <!---  <option value=""></option> --->
+                <option value=""></option>
                <cfoutput query="rLanguages">
                 <option value="#ID#">#Languages#</option>
               </cfoutput>
@@ -505,13 +444,13 @@ VALUES (#This.ID#
       <label class="col-sm-2 control-label">Preceptor Email</label>
       <div class="col-sm-4">
         <div class="input-group"> <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-        <input type="text" placeholder="Preceptor Email" name="EmailPermanent" class="form-control">
+        <input type="text" placeholder="Preceptor Email" name="PreceptorEmail" class="form-control">
       </div>
     </div>
     <label class="col-sm-2 control-label">Preceptor Phone</label>
     <div class="col-sm-4">
       <div class="input-group"> <span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-      <input type="text" placeholder="Preceptor Phone" id="phone" name="phone" class="form-control">
+      <input type="text" placeholder="Preceptor Phone" id="phone" name="PreceptorPhone" class="form-control">
     </div>
   </div>
 </div>
@@ -525,7 +464,7 @@ VALUES (#This.ID#
 
     <label class="col-sm-2 control-label">AffiliationAgreement</label>
     <div class="col-sm-10">
-      <select class="form-control chosen-select" multiple data-placeholder="Choose Preceptors's Specialty.." name="PreceptorsSpecialties" >
+      <select class="form-control chosen-select" multiple data-placeholder="Choose Preceptors's Specialty.." name="PreceptorsAffiliation" >
        <!---  <option value=""></option> --->
        <cfoutput query="rOrganizations">
         <option value="#ID#">#Organization#</option>
@@ -540,7 +479,7 @@ VALUES (#This.ID#
  <label class="col-sm-2 control-label">FirstYearPractice</label>
 
  <div class="col-sm-4">
-  <select class="form-control" data-placeholder="Choose a Year..." name="InstitutionLevel">
+  <select class="form-control" data-placeholder="Choose a Year..." name="FirstYearPractice">
     <option value="">Choose a Year...</option>
     <option value="0">2014</option>
     <option value="1">2013</option>
@@ -548,8 +487,8 @@ VALUES (#This.ID#
   </select>
 </div>
 <label class="col-sm-2 control-label">FirstYearPreceptor</label>
- <div class="col-sm-4">
-  <select class="form-control" data-placeholder="Choose a Year..." name="InstitutionLevel">
+<div class="col-sm-4">
+  <select class="form-control" data-placeholder="Choose a Year..." name="FirstYearPreceptor">
     <option value="">Choose a Year...</option>
     <option value="0">2014</option>
     <option value="1">2013</option>
@@ -562,7 +501,7 @@ VALUES (#This.ID#
 <div class="panel-footer">
   <div class="row">
     <div class="col-sm-12 ">
-      <input type="hidden" name="addTraineeHDN" value="True">
+      <input type="hidden" name="addPreceptorHDN" value="True">
       <button class="btn btn-primary">Submit</button>
       &nbsp;
       <button class="btn btn-default">Cancel</button>
